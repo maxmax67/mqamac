@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQA MacLite · Lightweight Mac Software</title>
+    
+    <!-- 引入 Inter 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- 动态背景光晕 -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- 左右滑入的三角形 -->
+    <div class="bg-triangle-left"></div>
+    <div class="bg-triangle-right"></div>
+
+    <!-- 鼠标跟随光晕 -->
+    <div class="mouse-glow"></div>
+
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <div class="logo">MQA-MacLite</div>
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="software.html">Software</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- 第一屏：欢迎区 -->
+    <div class="hero-fullscreen">
+        <h1 class="title">Welcome to MQA·MacLite</h1>
+        <p class="subtitle">A lightweight and efficient software collection for macOS.</p>
+        <div class="scroll-hint">Scroll down to read my story ↓</div>
+    </div>
+
+    <!-- 第二屏：故事区 -->
+    <div class="about-section" id="software">
+        <h2 class="about-title">Why I created MQA MacLite?</h2>
+        
+        <!-- SVG 画布 -->
+        <div class="tree-container">
+                        <svg class="tree-svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+                <!-- 1. 顶端主干直线 -->
+                <path class="tree-line" d="M 500 0 L 500 30" />
+
+                <!-- 2. 中间直通分支 -->
+                <path class="tree-line" d="M 500 30 L 500 100" />
+
+                <!-- 3. 左侧树枝：起点下移到 50，等主干长到一半时，它从这里分叉 -->
+                <path class="tree-line" d="M 500 50 C 500 70, 250 70, 250 100" />
+
+                <!-- 4. 右侧树枝：起点同样下移到 50 -->
+                <path class="tree-line" d="M 500 50 C 500 70, 750 70, 750 100" />
+            </svg>
+        </div>
+
+        <!-- 三张卡片 -->
+        <div class="timeline-container">
+            <div class="card-wrapper">
+                <div class="story-card">
+                    <h3>🧑‍💻 The Beginning</h3>
+                    <p>When I was 14, I became a Mac user.(Also, I'm 14 years old now! ) I tried many apps and spent time on GitHub exploring, but found that many were heavy and useless.</p>
+                </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="story-card">
+                    <h3>🛠️ The Solution</h3>
+                    <p>So, I decided to take matters into my own hands. I created this website to build and find lightweight, useful apps for users like you.</p>
+                </div>
+            </div>
+            <div class="card-wrapper">
+                <div class="story-card">
+                    <h3>🎯 The Goal</h3>
+                    <p>MQA MacLite aims to provide a minimalist, efficient, and hassle-free experience. If you love lightweight tools, try my projects and share your feedback!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部跳转按钮 -->
+        <div class="btn-container">
+            <a href="software.html" class="btn-primary">Discover software</a>
+        </div>
+    </div>
+
+    <!-- 引入 JS -->
+    <script src="script.js"></script>
+</body>
+</html>

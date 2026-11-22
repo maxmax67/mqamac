@@ -1,0 +1,985 @@
+/* ===== 1. 基础全局设置 ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    scroll-behavior: smooth;
+}
+
+/* ===== 顶部导航栏（毛玻璃版） ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    
+    /* 1. 半透明背景：用 rgba，0.6 代表 60% 的不透明度 */
+    background-color: rgba(255, 255, 255, 0.6) !important; 
+    
+    /* 2. 毛玻璃核心：把导航栏背后的画面模糊掉 */
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important; /* 兼容 Safari */
+    
+    /* 3. 底部极细的微光边框，增加立体感 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    
+    /* 4. 吸附在顶部 */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.menu {
+    display: flex;
+    gap: 32px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #1d1d1f;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.menu a:hover {
+    color: #0071e3;
+}
+
+/* ===== 3. 第一屏：全屏欢迎区 ===== */
+.hero-fullscreen {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.title {
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -1.5px;
+}
+
+.subtitle {
+    font-size: 22px;
+    color: #86868b;
+    margin: 0;
+}
+
+.scroll-hint {
+    margin-top: 60px;
+    font-size: 14px;
+    color: #86868b;
+    letter-spacing: 1px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* ===== 4. 第二屏：故事区 ===== */
+.about-section {
+    background-color: #ffffff;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.about-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 50px;
+    letter-spacing: -0.5px;
+}
+
+/* 画布容器拉高，容纳上下两截线 */
+.tree-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 240px; 
+    position: relative;
+}
+
+.tree-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.tree-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 160px; /* 改成 160px */
+    position: relative;
+}
+
+
+.tree-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.tree-line {
+    fill: none;
+    /* 加上这句过渡，让线的生长稍微滞后一点点，更有质感 */
+    transition: stroke-dashoffset 0.3s ease-out, stroke 0.5s; 
+    /* ... 其他代码保留 ... */
+}
+
+/* 浅色的辅助线 */
+.tree-line.faint {
+    stroke: rgba(0, 113, 227, 0.1); 
+    stroke-width: 1px;
+}
+
+/* 当 JS 触发时的状态：变亮并发光 */
+.tree-line.active {
+    stroke: #0071e3; /* 高亮苹果蓝 */
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 6px rgba(0, 113, 227, 0.6)); /* 蓝色霓虹发光 */
+}
+
+.tree-line.faint.active {
+    stroke: rgba(0, 113, 227, 0.5); /* 辅助线稍微暗一点 */
+    filter: none; /* 辅助线不发光，拉开层次 */
+}
+
+/* 中间那个带毛玻璃质感的节点 */
+.center-node {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.8); /* 半透明白底 */
+    backdrop-filter: blur(10px); /* 毛玻璃 */
+    border: 1px solid rgba(0, 113, 227, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 113, 227, 0.15), 0 0 20px rgba(0, 113, 227, 0.1); /* 外发光和弥散阴影 */
+    padding: 10px 24px;
+    border-radius: 99px;
+    color: #0071e3; 
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    z-index: 10;
+    letter-spacing: 0.5px;
+}
+
+/* ===== 6. 卡片区 ===== */
+.timeline-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.story-card {
+    flex: 1;
+    margin: 0 10px;
+    background-color: #f5f5f7;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: left;
+    transition: all 0.4s ease;
+    border: 1px solid transparent;
+}
+
+.story-card:hover {
+    transform: translateY(-8px);
+    background-color: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 113, 227, 0.1);
+}
+
+.story-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #1d1d1f;
+}
+
+.story-card p {
+    font-size: 15px;
+    color: #86868b;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ===== 7. 底部按钮 ===== */
+.btn-container {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: #0071e3;
+    color: #ffffff;
+    padding: 16px 36px;
+    border-radius: 99px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0077ed;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 113, 227, 0.2);
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .tree-container { display: none; }
+    .timeline-container { flex-direction: column; }
+    .story-card { margin: 10px 0; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; }
+}
+
+/* ===== 修复光晕背景 ===== */
+body {
+    position: relative;
+    overflow-x: hidden;
+    background-color: #ffffff !important; /* 强制背景为白 */
+}
+
+/* 确保光晕固定在背景上 */
+.bg-glow {
+    position: fixed; /* 用 fixed 让光晕固定在屏幕上，滑动时不会跑 */
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.6;
+    z-index: -10; /* 放到最底层 */
+    pointer-events: none; 
+}
+
+.bg-glow-1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(0, 113, 227, 0.25); /* 苹果蓝 */
+    top: -100px;
+    left: -100px;
+    animation: drift-1 15s infinite alternate ease-in-out;
+}
+
+.bg-glow-2 {
+    width: 600px;
+    height: 600px;
+    background: rgba(175, 82, 222, 0.2); /* 苹果紫 */
+    bottom: -200px;
+    right: -100px;
+    animation: drift-2 18s infinite alternate ease-in-out;
+}
+
+@keyframes drift-1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(150px, 150px) scale(1.1); }
+}
+
+@keyframes drift-2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-150px, -100px) scale(1.2); }
+}
+
+/* ===== 修复卡片区背景（这是遮住光晕的元凶！） ===== */
+/* 把原本的纯白背景去掉，改成透明 */
+.about-section {
+    background-color: transparent !important; 
+}
+/* ===== 右下角动态直角三角形 ===== */
+.bg-triangle {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    /* 用 CSS clip-path 裁切出一个直角三角形 */
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    width: 45vw; /* 占屏幕宽度的 45% */
+    height: 45vw;
+    max-width: 600px;
+    max-height: 600px;
+    
+    /* 高级的半透明渐变（苹果蓝过渡到透明） */
+    background: linear-gradient(135deg, rgba(0, 113, 227, 0.15), rgba(0, 113, 227, 0.02));
+    
+    z-index: -5; /* 放在底层，光晕上面，内容下面 */
+    pointer-events: none;
+    
+    /* 初始状态：向屏幕外偏移，为动画做准备 */
+    transform: translate(100%, 100%);
+    transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 当 JS 监听到滑动，或者页面加载时加上这个 class，三角形就滑进来了 */
+.bg-triangle.active {
+    transform: translate(0, 0);
+}
+
+/* 加一点微弱的网格线条，更有科技感 */
+.bg-triangle::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+}
+/* ===== App Store 页面专属样式 ===== */
+.app-store-container {
+    max-width: 1000px;
+    margin: 100px auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.store-header {
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+/* 超大、极粗的标题，苹果风 */
+.store-title {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin: 0 0 10px 0;
+    color: #1d1d1f;
+}
+
+.store-subtitle {
+    font-size: 20px;
+    color: #86868b;
+    margin: 0;
+    font-weight: 500;
+}
+
+
+
+/* 专门给详情页用的超大号 GET 按钮 */
+.get-btn-large {
+    font-size: 16px;
+    padding: 10px 28px;
+    font-weight: 700;
+    background: #0071e3;
+    color: white;
+}
+
+.get-btn-large:hover {
+    background: #0077ed;
+}
+
+/* 正文排版 */
+.article-content {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #424245;
+}
+
+.article-content p {
+    margin-bottom: 24px;
+}
+
+.article-content .lead {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 30px;
+}
+
+.article-content h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 40px 0 20px 0;
+}
+
+.article-content ul {
+    margin-bottom: 24px;
+    padding-left: 20px;
+}
+
+.article-content li {
+    margin-bottom: 12px;
+}
+/* 鼠标跟随光晕 */
+.mouse-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.05) 0%, rgba(0, 113, 227, 0) 70%);
+    pointer-events: none; /* 防止挡住鼠标点击 */
+    z-index: -4; /* 在背景光晕之上，内容之下 */
+    transform: translate(-50%, -50%); /* 让光晕中心对准鼠标 */
+    transition: opacity 0.3s ease;
+    opacity: 0; /* 默认隐藏 */
+}
+/* 给卡片所在的父容器加上 3D 透视，仿佛我们在看着它 */
+.timeline-container {
+    perspective: 1000px;
+}
+
+/* 卡片基础过渡，让变化丝滑 */
+.story-card {
+    transition: transform 0.1s ease, box-shadow 0.5s ease;
+    /* 保持原来的其他样式 */
+}
+
+/* 当鼠标放上去时，加一点浮空阴影 */
+.story-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+/* 隐形外衣：负责占位和接收鼠标事件 */
+.card-wrapper {
+    flex: 1; 
+    margin: 0 10px;
+    display: flex; 
+    perspective: 1000px; 
+}
+
+/* 卡片本体：去掉 margin */
+.story-card {
+    flex: 1;
+    background-color: #ffffff; 
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04); /* 恢复基础的浅阴影 */
+    /* 你的其他样式保留... */
+}
+
+/* 强行固定背景光晕 */
+.bg-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.6;
+    z-index: -10;
+    pointer-events: none;
+}
+
+
+/* 右侧三角形 */
+.bg-triangle-right {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    width: 40vw;
+    height: 40vw;
+    max-width: 600px;
+    max-height: 600px;
+    background: linear-gradient(135deg, rgba(0, 113, 227, 0.12), rgba(0, 113, 227, 0.02));
+    z-index: -5;
+    pointer-events: none;
+    /* 恢复初始状态：藏在屏幕外面 */
+    transform: translate(100%, 100%);
+    transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 当 JS 加上 active 类名时，滑入屏幕 */
+.bg-triangle-right.active {
+    transform: translate(0, 0);
+}
+
+/* ========================================= */
+
+/* 左侧三角形（顺便把左边的也一起检查替换） */
+.bg-triangle-left {
+    position: fixed;
+    top: 0;
+    left: 0;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    width: 35vw;
+    height: 35vw;
+    max-width: 500px;
+    max-height: 500px;
+    background: linear-gradient(135deg, rgba(175, 82, 222, 0.1), rgba(175, 82, 222, 0.01));
+    z-index: -5;
+    pointer-events: none;
+    /* 恢复初始状态：藏在屏幕外面 */
+    transform: translate(-100%, -100%);
+    transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 当 JS 加上 active 类名时，滑入屏幕 */
+.bg-triangle-left.active {
+    transform: translate(0, 0);
+}
+/* ===== Contact 页面专属样式 ===== */
+.contact-container {
+    max-width: 700px;
+    margin: 120px auto;
+    padding: 0 20px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.contact-title {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    color: #1d1d1f;
+    margin-bottom: 16px;
+}
+
+.contact-subtitle {
+    font-size: 20px;
+    color: #86868b;
+    margin-bottom: 60px;
+    font-weight: 500;
+}
+
+/* 联系方式列表 */
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 仿 App Store 的横版交互卡片 */
+.contact-card {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 24px 30px;
+    border-radius: 24px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 113, 227, 0.2);
+}
+
+/* 左侧图标 */
+.contact-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: #f5f5f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+/* 右侧文字 */
+.contact-info {
+    margin-left: 20px;
+    text-align: left;
+}
+
+.contact-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #1d1d1f;
+}
+
+.contact-info p {
+    font-size: 15px;
+    color: #86868b;
+    margin: 0;
+}
+/* ===== Software 页面充实感补充 ===== */
+
+/* 分类胶囊 */
+.category-pills {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 40px;
+    overflow-x: auto;
+}
+
+.pill {
+    padding: 8px 16px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(0,0,0,0.05);
+    font-size: 14px;
+    font-weight: 500;
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.pill.active {
+    background: #0071e3;
+    color: white;
+    border-color: #0071e3;
+}
+
+/* 精选横幅 (Banner) */
+.featured-banner {
+    background: linear-gradient(120deg, #0a2540, #0071e3);
+    border-radius: 24px;
+    padding: 50px 40px;
+    color: white;
+    margin-bottom: 60px;
+    box-shadow: 0 20px 40px rgba(0, 113, 227, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.featured-banner h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    letter-spacing: -1px;
+}
+
+.featured-banner p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin: 0;
+    max-width: 500px;
+}
+
+/* 网格分栏标题 */
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #1d1d1f;
+}
+
+/* 调整网格为三列，看起来更满 */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* 底部开发者寄语 */
+.developer-note {
+    margin-top: 80px;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.developer-note h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.developer-note p {
+    color: #86868b;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ===== 锁定软件列表的绝对排版 ===== */
+.app-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    max-width: 760px !important;
+    margin-top: 40px !important;
+}
+
+/* 卡片本体：绝对横向展开，没有阴影 */
+.app-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #ffffff !important;
+    height: 104px !important; /* 强制统一高度 */
+    padding: 0 30px !important;
+    border-radius: 20px !important;
+    box-shadow: none !important; /* 彻底干掉阴影 */
+    border: 1px solid rgba(0, 0, 0, 0.05) !important; /* 只用细边框 */
+}
+
+/* 左侧链接：图标 + 文字 */
+.app-card-link {
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    flex-grow: 1 !important;
+}
+
+/* 图标固定大小 */
+.app-icon-wrapper {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+    box-shadow: none !important;
+}
+
+/* 文字固定左对齐 */
+.app-info {
+    margin-left: 20px !important;
+    text-align: left !important;
+}
+
+.app-info h3 {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin: 0 0 4px 0 !important;
+    color: #1d1d1f !important;
+}
+
+.app-info p {
+    font-size: 14px !important;
+    color: #86868b !important;
+    margin: 0 !important;
+}
+
+/* GET 按钮固定右侧 */
+.app-btn {
+    background: #f5f5f7 !important;
+    color: #0071e3 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    padding: 8px 24px !important;
+    border-radius: 99px !important;
+    text-decoration: none !important;
+    flex-shrink: 0 !important;
+    margin-left: 20px !important; /* 和文字拉开距离 */
+}
+
+/* ===== 护体真言：强制居中与排版修复 ===== */
+.article-container {
+    max-width: 760px !important;
+    margin: 100px auto !important;
+    padding: 0 20px !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* 详情页头部排版 */
+.app-header {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 40px !important;
+    padding-bottom: 30px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+.app-header-text {
+    flex-grow: 1 !important;
+    margin-left: 24px !important;
+}
+
+.app-header-text h1 {
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.app-subtitle {
+    color: #86868b !important;
+    font-size: 16px !important;
+    margin: 0 !important;
+}
+
+/* 详情页大号 GET 按钮 */
+.get-btn-large {
+    background: #0071e3 !important;
+    color: white !important;
+    padding: 10px 28px !important;
+    font-size: 16px !important;
+}
+
+/* 列表页的排版锁死（刚才的代码我也整合进来了） */
+.app-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    max-width: 760px !important;
+    margin: 40px auto !important;
+}
+
+.app-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #ffffff !important;
+    height: 104px !important;
+    padding: 0 30px !important;
+    border-radius: 20px !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.app-card-link {
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    flex-grow: 1 !important;
+}
+
+.app-icon-wrapper {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+}
+
+.app-info {
+    margin-left: 20px !important;
+    text-align: left !important;
+}
+
+.app-info h3 { margin: 0 0 4px 0 !important; font-size: 18px !important; font-weight: 700 !important;}
+.app-info p { margin: 0 !important; font-size: 14px !important; color: #86868b !important;}
+
+.app-btn {
+    background: #f5f5f7 !important;
+    color: #0071e3 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    padding: 8px 24px !important;
+    border-radius: 99px !important;
+    text-decoration: none !important;
+    flex-shrink: 0 !important;
+}
+
+/* ===== 彻底锁定长条卡片排版 ===== */
+
+/* 顶部两个标题对齐 */
+.section-header-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: baseline !important;
+    max-width: 760px !important;
+    margin: 40px auto 20px auto !important;
+    padding: 0 10px !important;
+}
+
+.app-count {
+    font-size: 14px !important;
+    color: #86868b !important;
+}
+
+/* 网格：单列排布，居中 */
+.app-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    max-width: 760px !important;
+    margin: 0 auto !important; /* 强制水平居中 */
+}
+
+/* 卡片本体 */
+.app-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #ffffff !important;
+    height: 104px !important;
+    padding: 0 30px !important;
+    border-radius: 20px !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 左侧链接区 */
+.app-card-link {
+    display: flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    flex-grow: 1 !important;
+}
+
+/* 图标防变形 */
+.app-icon-wrapper {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+}
+
+.app-icon-wrapper img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+/* 文字防挤压 */
+.app-info {
+    margin-left: 20px !important;
+    text-align: left !important;
+}
+
+.app-info h3 { margin: 0 0 4px 0 !important; font-size: 18px !important; font-weight: 700 !important; color: #1d1d1f !important;}
+.app-info p { margin: 0 !important; font-size: 14px !important; color: #86868b !important;}
+
+/* GET 按钮防变形 */
+.app-btn {
+    background: #f5f5f7 !important;
+    color: #0071e3 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    padding: 8px 24px !important;
+    border-radius: 99px !important;
+    text-decoration: none !important;
+    flex-shrink: 0 !important;
+}
+
+.placeholder-card {
+    opacity: 0.6; /* 让占位卡片稍微变淡，突出你真正的软件 */
+    transition: opacity 0.3s ease;
+}
+
+.placeholder-card:hover {
+    opacity: 1; /* 鼠标放上去时恢复完全清晰 */
+}

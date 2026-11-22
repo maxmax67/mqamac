@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IYM Autoclicker · MQA MacLite</title>
+    
+    <!-- 引入 Inter 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 引入 CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- 动态背景 -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="mouse-glow"></div>
+
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <div class="logo">MQA-MacLite</div>
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="software.html" style="color: #0071e3; font-weight: 600;">Software</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- 详情文章区 -->
+    <main class="article-container">
+        
+        <!-- 文章头部：图标 + 标题 + GET 按钮 -->
+        <div class="app-header">
+            <div class="app-icon-wrapper" style="width: 100px; height: 100px; border-radius: 22px;">
+                <img src="IYM-AutoClicker.png" alt="IYM Icon">
+            </div>
+            
+            <div class="app-header-text">
+                <h1>IYM Autoclicker</h1>
+                <p class="app-subtitle">Lightweight automation tool for macOS</p>
+            </div>
+            
+            <!-- 苹果风的 GET 按钮 -->
+            <a href="IYM-AutoClicker.zip" class="app-btn get-btn-large" download>GET</a>
+        </div>
+
+        <!-- 文章正文区 -->
+        <div class="article-content">
+            <p class="lead">Do you like playing games? If you like playing games, you'll love IYM Autoclicker! This app can help you automate repetitive clicking work, and is very helpful for your game playing.</p>
+            
+            <p>That's why I built <strong>IYM Autoclicker</strong>. It's a natively designed macOS utility that does exactly one thing, and does it perfectly: it clicks for you.</p>
+
+            <h2>Why choose IYM Autoclicker?</h2>
+            <ul>
+                <li><strong>Lightweight:</strong> It barely uses any CPU or memory.</li>
+                <li><strong>Precision:</strong> Set exact coordinates and millisecond intervals.</li>
+                <li><strong>UI:</strong> Beautiful UI made with two styles to choose from.</li>
+            </ul>
+
+            <p>This project was built in collaboration with <strong>IYS</strong>. By clicking the GET button above, you'll be redirected to the secure download page.</p>
+        </div>
+
+    </main>
+
+    <!-- 引入 JS (为了触发背景动画) -->
+    <script src="script.js"></script>
+</body>
+</html>

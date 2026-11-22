@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact · MQA MacLite</title>
+    
+    <!-- 引入 Inter 字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 引入 CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- 动态背景光晕 -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-triangle-left"></div>
+    <div class="bg-triangle-right"></div>
+    <div class="mouse-glow"></div>
+
+    <!-- 顶部导航栏 -->
+    <header class="navbar">
+        <div class="logo">MQA-MacLite</div>
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="software.html">Software</a>
+            <a href="contact.html" style="color: #0071e3; font-weight: 600;">Contact</a>
+        </nav>
+    </header>
+
+    <!-- 联系方式主体区 -->
+    <main class="contact-container">
+        <h1 class="contact-title">Tell us the problems</h1>
+        <p class="contact-subtitle">Have a question, feedback, or want to collaborate? Drop me a message.</p>
+
+        <div class="contact-links">
+            <!-- 邮箱卡片 -->
+            <a href="mailto:maxtt.q@icloud.com" class="contact-card">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-info">
+                    <h3>Email</h3>
+                    <p>maxtt.q@icloud.com</p>
+                </div>
+            </a>
+
+            <!-- GitHub 卡片 -->
+            <a href="https://github.com/maxmax67" target="_blank" class="contact-card">
+                <div class="contact-icon">💻</div>
+                <div class="contact-info">
+                    <h3>GitHub</h3>
+                    <p>@maxmax67</p>
+                </div>
+            </a>
+
+            <!-- IYS 合作方卡片（可选） -->
+            <a href="#" class="contact-card">
+                <div class="contact-icon">🤝</div>
+                <div class="contact-info">
+                    <h3>IYS Collaboration</h3>
+                    <p>Official distribution partner</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- 引入 JS (用于触发背景特效) -->
+    <script src="script.js"></script>
+</body>
+</html>
